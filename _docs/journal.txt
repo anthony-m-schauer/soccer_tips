@@ -90,8 +90,8 @@ Session 4
 Current Session Bullets:
 
 - slight adjustment to add a third section to the enginnering handoff doc called Developer Implementation Contract
-- confimrmed folder structure and began layer 2, got advice from manager and sent this along with my comments to the lead developer 
+- confimrmed folder structure and began layer 1, got advice from manager and sent this along with my comments to the lead developer 
 - Created a general developer to start building actual code, had lead dev give him first job to create 
-- job was "The General Developer was assigned to begin Layer 1 Ingestion Infrastructure v0.1, turning the completed SkillCorner and Metrica validation findings into reusable project code. Their job is to build the core ingestion foundation: schemas, config/path utilities, provider-specific loaders, normalization utilities, validation checks, and a Layer 1 runner script, while staying aligned with the architecture and Engineering Department Doc."
+- job was called Layer 1 Ingestion Infrastructure v0.1 and the main idea was "The General Developer was assigned to begin Layer 1 Ingestion Infrastructure v0.1, turning the completed SkillCorner and Metrica validation findings into reusable project code. Their job is to build the core ingestion foundation: schemas, config/path utilities, provider-specific loaders, normalization utilities, validation checks, and a Layer 1 runner script, while staying aligned with the architecture and Engineering Department Doc."
 - the layer 1 handoff doc was created to signal a completion of the first layer. then layer two was began by asking both the manager and the lead developer their thoughts on how to procede and then decide the best course of action on their answers. 
-- 
+- gave the general developer his second assignment which was the Layer 2 v0.1 Feature Engineering Foundation
