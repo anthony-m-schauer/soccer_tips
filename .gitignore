@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Local secrets/config
+.env
+.env.*
+*.env
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Raw and processed data
+external/
+data/raw/
+data/interim/
+data/processed/
+
+# Logs and local outputs
+logs/
+*.log
+outputs/
+
+# Large/local model artifacts
+models/
+*.pkl
+*.joblib
+*.onnx
+*.pt
+*.pth

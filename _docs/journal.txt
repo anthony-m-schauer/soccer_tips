@@ -1,0 +1,97 @@
+SESSION 1
+
+What I did
+- I started the project by creating a new ChatGPT project and setting up a "Project Manager" chat. I gave it my project 
+proposal, some of my past work, and the two books I am using to guide the project ("Football Hackers" and "Data Analytics 
+in Football"). I worked with that chat to expand my idea into a full system architecture and workflow document (around 
+14 pages). I uploaded that into the project files so every future chat has the full context. I also defined what the 
+Project Manager chat is supposed to do. It’s mainly for planning the project, helping me think through things, and also 
+helping me create other chats with good prompts so each one has a clear role.
+
+- After that, I created a "Brainstorming" chat using a prompt the Project Manager helped me write. I used that to get more 
+comfortable with the project and actually understand what I’m building and why. Then I used the Project Manager again to 
+create a "Data Acquisition and Validation" chat, which will handle getting and checking the data.
+
+Why this mattered
+- This session basically set up the whole structure of the project. Instead of just working in one chat or randomly, I now 
+have a system with different chats doing different things. I also now have a full architecture document that explains how 
+everything is supposed to work, which should help keep me on track.
+
+Key decisions
+- Use a ChatGPT project with multiple chats instead of one
+- Treat this as a full system, not just an analysis
+- Separate roles (Project Manager, Brainstorming, Data, etc.)
+- Create a full architecture document early
+
+--------------------------------------------------------------------------------------------------------------------------------------
+SESSION 2
+
+What I did
+- In this session I set up the project in VSCode. I created the main project folder and then made my usual structure: _docs, 
+data, external, and src. This just helps keep everything organized from the start. I also created a .gitignore file and set 
+up a virtual environment (venv) so the project is clean and easier to manage later. After that, I downloaded the main dataset 
+by cloning the SkillCorner Open Data repo into the external folder.
+
+- I also created this Project Journal Assistant chat so I have a dedicated place to document what I work on each session. The 
+goal is for this chat to help clean up journal entries, ask better questions when I don’t know what to write, and keep the 
+format consistent as the project grows.
+
+Why this mattered
+- This was the first real step of actually building something. Now the project is set up properly instead of just being 
+ideas. Everything is organized, I have the main data source ready to start working with, and I now have a better system 
+for documenting the project as I go.
+
+
+Key decisions
+- Use a clean folder structure from the beginning
+- Keep external/raw data separate
+- Set up venv right away
+- Start with SkillCorner as the main dataset
+- Create a dedicated journal helper chat for project documentation
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Session 3
+
+What I did
+- I created the two main data validation documents: the Engineering Department Validation & Data Ingestion Handoff Summary 
+and the SkillCorner Acquisition, Structure, and Validation Report. These documents explained what was found during the first 
+real validation work on the SkillCorner dataset and helped me understand what the data actually looks like before building 
+anything on top of it.
+
+- The biggest things I went over were the match file structure, how the tracking JSONL files work, how player metadata 
+connects to tracking data, and what files exist for each match. I also reviewed the important issue that one match is missing 
+dynamic events, so future ingestion code needs to treat dynamic events as optional instead of assuming every match has them.
+
+- I also went over the major validation findings, especially that tracking player_data.player_id should join to 
+players_df["id"], not trackable_object or team_player_id. I reviewed how usable tracking frames seem to be either empty 
+or full 22-player frames, which is much cleaner than expected. The documents also showed that the phases of play and 
+dynamic event windows align properly with tracking frames, which is important because the project depends on phase-based 
+tactical analysis later.
+
+Why this mattered
+- This session helped move the project from “I have the data downloaded” to “I understand the data well enough to start 
+building ingestion code.” It also made clear that the next step should not be tactical metrics or AI interpretation yet. The 
+next step should be turning the validation findings into reusable loading and validation modules.
+
+Key decisions
+- Treat the validation docs as the main reference for Layer 1 data ingestion
+- Use SkillCorner as the first validated dataset
+- Join tracking player_id to players_df["id"]
+- Treat dynamic events as optional because one match is missing that file
+- Preserve is_detected for future confidence and quality checks
+- Filter early tracking work to usable 22-player frames
+- Use phases of play as an important segmentation source later
+- Move next toward reusable ingestion engineering before tactical metrics
+- Known limitation: match 1953632 has no dynamic_events.csv file.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Session 4
+
+Current Session Bullets:
+
+- slight adjustment to add a third section to the enginnering handoff doc called Developer Implementation Contract
+- confimrmed folder structure and began layer 2, got advice from manager and sent this along with my comments to the lead developer 
+- Created a general developer to start building actual code, had lead dev give him first job to create 
+- job was "The General Developer was assigned to begin Layer 1 Ingestion Infrastructure v0.1, turning the completed SkillCorner and Metrica validation findings into reusable project code. Their job is to build the core ingestion foundation: schemas, config/path utilities, provider-specific loaders, normalization utilities, validation checks, and a Layer 1 runner script, while staying aligned with the architecture and Engineering Department Doc."
+- the layer 1 handoff doc was created to signal a completion of the first layer. then layer two was began by asking both the manager and the lead developer their thoughts on how to procede and then decide the best course of action on their answers. 
+- 
