@@ -1,19 +1,10 @@
 """
-Feature engineering utilities for Soccer TIPS.
+Feature-engineering utilities for Soccer TIPS.
 
-Current implementation scope: Layer 2 v0.1 feature-engineering foundation.
+Current scope:
+- Layer 2 v0.1 feature-engineering foundation
+- Layer 2 v0.2 football sanity validation
 
-This package consumes Layer 1 canonical outputs and builds reusable frame-level,
-phase-level, and match-level feature tables. It does not perform Layer 3 tactical
-modeling, AI interpretation, dashboards, recommendations, or reporting.
+This package does not authorize Layer 3 modeling, AI interpretation,
+dashboards, reports, recommendations, or advanced tactical claims.
 """
-
-__all__ = [
-    "layer2_schemas",
-    "phase_context",
-    "orientation",
-    "team_shape",
-    "aggregation",
-    "build_layer2",
-    "qa_layer2_outputs",
-]
