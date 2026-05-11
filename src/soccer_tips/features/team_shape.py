@@ -126,8 +126,11 @@ def compute_team_shape_for_group(
 
     centroid_x = float(x_values.mean())
     centroid_y = float(y_values.mean())
-    team_width = float(x_values.max() - x_values.min())
-    team_depth = float(y_values.max() - y_values.min())
+    # Football convention used by Soccer TIPS:
+    # - width is the lateral spread across the pitch: y range
+    # - depth is the longitudinal spread along the pitch: x range
+    team_width = float(y_values.max() - y_values.min())
+    team_depth = float(x_values.max() - x_values.min())
 
     distances = [
         sqrt((float(x) - centroid_x) ** 2 + (float(y) - centroid_y) ** 2)

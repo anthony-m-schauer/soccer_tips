@@ -85,13 +85,117 @@ Key decisions
 - Known limitation: match 1953632 has no dynamic_events.csv file.
 
 --------------------------------------------------------------------------------------------------------------------------------------
-Session 4
+SESSION 4
 
-Current Session Bullets:
+What I did
+- I made a small but important update to the engineering handoff document by adding a third section called Developer 
+Implementation Contract. This made the handoff more useful for future development work because it clarified what a developer 
+should actually implement, not just what the validation work found.
 
-- slight adjustment to add a third section to the enginnering handoff doc called Developer Implementation Contract
-- confimrmed folder structure and began layer 1, got advice from manager and sent this along with my comments to the lead developer 
-- Created a general developer to start building actual code, had lead dev give him first job to create 
-- job was called Layer 1 Ingestion Infrastructure v0.1 and the main idea was "The General Developer was assigned to begin Layer 1 Ingestion Infrastructure v0.1, turning the completed SkillCorner and Metrica validation findings into reusable project code. Their job is to build the core ingestion foundation: schemas, config/path utilities, provider-specific loaders, normalization utilities, validation checks, and a Layer 1 runner script, while staying aligned with the architecture and Engineering Department Doc."
-- the layer 1 handoff doc was created to signal a completion of the first layer. then layer two was began by asking both the manager and the lead developer their thoughts on how to procede and then decide the best course of action on their answers. 
-- gave the general developer his second assignment which was the Layer 2 v0.1 Feature Engineering Foundation
+- I confirmed the local project folder structure and started moving from setup and validation into actual engineering work. I 
+got advice from the Project Manager and passed that direction, along with my own comments, to the Lead Developer so the next 
+step would be coordinated instead of random.
+
+- I created a General Developer chat to start building the actual project code. The Lead Developer gave him the first main 
+job: Layer 1 Ingestion Infrastructure v0.1. The assignment was to turn the completed SkillCorner and Metrica validation findings 
+into reusable project code, including schemas, config/path utilities, provider-specific loaders, normalization utilities, 
+validation checks, and a Layer 1 runner script.
+
+- Layer 1 v0.1 was built and documented. This created the reusable ingestion foundation for the project, including 
+provider-specific loading for SkillCorner and Metrica, canonical player and ball tracking outputs, validation reports, 
+controlled batch processing, QA inspection, and schema compliance checks.
+
+- After the Layer 1 work was accepted, a Layer 1 handoff document was created to mark that first engineering layer as 
+complete. This helped preserve what was built, how to run it, what warnings are expected, and what future helpers should not redo.
+
+- I also started preparing for Layer 2 by asking both the Project Manager and Lead Developer how to proceed. I compared 
+their answers and used that to decide the next course of action instead of jumping straight into the more exciting tactical 
+parts too early.
+
+Why this mattered
+- This session moved the project from validation and planning into real reusable engineering. Layer 1 became an actual 
+working foundation instead of just notes about the data. That matters because every later tactical metric, model, and AI 
+workflow depends on having clean, trusted, reusable processed data first.
+
+Key decisions
+- Add a Developer Implementation Contract section to the engineering handoff document
+- Move from validation notes into reusable engineering work
+- Create a General Developer chat for actual implementation work
+- Assign General Developer 1 to Layer 1 Ingestion Infrastructure v0.1
+- Build Layer 1 around reusable loaders, schemas, validation checks, path utilities, normalization utilities, and a runner script
+- Treat Layer 1 as complete only after canonical outputs, validation reports, batch processing, and QA were working
+- Create a Layer 1 handoff document to mark the first engineering layer as accepted
+- Check Layer 2 direction with the Project Manager and Lead Developer before starting
+
+--------------------------------------------------------------------------------------------------------------------------------
+SESSION 5
+
+What I did
+- I gave General Developer 1 his second major assignment: Layer 2 v0.1 Feature Engineering Foundation. This moved the project 
+from reusable ingestion into the first real football feature layer. The work created the reusable features package, including 
+phase context linking, frame-level team shape metrics, phase-segment summaries, match tactical profiles, Layer 2 QA, and batch 
+processing across all processed SkillCorner matches.
+
+- A formal Layer 2 v0.1 / v0.2 handoff document was created after that work. It documented the code structure, how to run 
+Layer 2, output files, row grain, QA results, and the football sanity validation workflow. This made Layer 2 feel like a real 
+engineering checkpoint instead of just a group of scripts that happened to run.
+
+- Layer 2 v0.2 Football Sanity Validation was then added. This was not meant to create new tactical metrics or start 
+Layer 3. The point was to check whether the Layer 2 metrics behaved like football. It created sanity summary outputs, 
+validation plots, and reasonableness checks so the project could catch football-validity problems before using the numbers 
+for tactical claims.
+
+- The football sanity validation ran successfully, but it returned a warning on team_width_pitch_bound. That meant team_width 
+sometimes exceeded the expected pitch-width bound. We did not treat the warning as a full failure, but we also did not allow 
+Layer 3 to start because team_width needed a closer review before being used for tactical profiling.
+
+- A Layer 2 v0.2.1 team_width Warning Review was performed. This review checked the actual local Layer 2 outputs, worst 
+offending rows, raw player coordinates, time continuity, and exact validation plots. The review found that this was probably 
+not just a weird outlier. It looked like a real metric definition issue.
+
+- The key finding was that team_width appeared to behave like longitudinal x-range, while team_depth appeared to behave like 
+lateral y-range. That conflicted with the project convention that team_width should be max(y_metric) - min(y_metric), 
+and team_depth should be max(x_metric) - min(x_metric). A warning review result document was created to record the finding 
+and explain that team_width should not be used for Layer 3 tactical claims until patched and revalidated.
+
+- I initially tried to retire General Developer 1 because the chat was getting slower and I wanted a cleaner, more 
+analyst-focused developer for the next phase. That turned out to be too early because the project was still dealing with a 
+Layer 2 issue, not a true Layer 3 assignment yet. Instead, General Developer 1 had to stay active for one final cleanup patch.
+
+- The Lead Developer accepted the warning review result and gave General Developer 1 one final assignment: Layer 2 v0.2.2 
+team_width/team_depth Metric Patch and Revalidation. A patch package was created to fix the metric definition in team_shape.py 
+and add or update a regression test so the bug is harder to reintroduce later.
+
+- The project then began rerunning the required validation sequence after the patch: Layer 2 feature tests, football 
+sanity tests, Layer 2 batch processing, Layer 2 QA, football sanity QA, and the team_width warning review. Layer 3 is 
+intentionally still paused until this patch fully passes and the final handoff documents are updated.
+
+- The Project Manager also sent a team-level message recognizing that the project is entering the interesting stage. Layer 1 
+proved the project could be engineered correctly, and Layer 2 is where the football intelligence starts to show up. The 
+validation, ingestion architecture, documentation, and QA work all mattered because they created the foundation for the more 
+distinctive tactical analysis that comes next.
+
+Why this mattered
+- This session was a major checkpoint because Layer 2 produced the first real football-relevant feature outputs, and the 
+football sanity validation caught a real issue before the project built tactical claims on top of it. That is not a failure. It 
+is exactly why the project is using layered validation in the first place.
+
+- This session also made it clear why Layer 3 should not start yet. Layer 3 tactical profiling depends on trustworthy Layer 2 
+features. Starting it before fixing and revalidating the width/depth issue would risk building the cooler tactical analysis on 
+a faulty metric. The project is closer to the interesting part now, but it has to finish this cleanup correctly first.
+
+Key decisions
+- Assign General Developer 1 to Layer 2 v0.1 Feature Engineering Foundation
+- Use SkillCorner as the active Layer 2 provider because it has validated phases_of_play data
+- Build Layer 2 around phase context linking, team shape metrics, phase summaries, match tactical profiles, QA, and batch processing
+- Create a Layer 2 handoff document to preserve code structure, run commands, outputs, QA results, and scope limits
+- Add Layer 2 v0.2 Football Sanity Validation before allowing tactical claims
+- Treat the team_width warning as a serious review item, not something to ignore
+- Pause Layer 3 until team_width/team_depth are patched and revalidated
+- Keep General Developer 1 active for one final Layer 2 cleanup instead of retiring him too early
+- Patch team_width so it means lateral y-range and team_depth so it means longitudinal x-range
+- Add regression testing so the width/depth bug is harder to reintroduce later
+- Frame the warning as a professional catch and proof that the validation workflow is working
+- Do not start Layer 3 modeling, clustering, tactical identity profiling, AI interpretation, dashboards, reporting, or recommendations yet
+
+--------------------------------------------------------------------------------------------------------------------------------

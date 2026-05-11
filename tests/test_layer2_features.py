@@ -33,11 +33,19 @@ def test_layer2_schema_definitions_exist() -> None:
 
 
 def test_centroid_width_depth_and_hull_calculation() -> None:
-    """Confirm team shape metrics work on a simple square."""
+    """Confirm team shape metrics use football width/depth convention.
+
+    This test intentionally uses different x and y ranges so it catches
+    the exact reversal bug found in Layer 2 v0.2.1.
+
+    Soccer TIPS convention:
+    - team_width = lateral y_metric/y_analysis range
+    - team_depth = longitudinal x_metric/x_analysis range
+    """
     df = pd.DataFrame(
         {
-            "x_analysis": [0.0, 2.0, 2.0, 0.0],
-            "y_analysis": [0.0, 0.0, 2.0, 2.0],
+            "x_analysis": [0.0, 20.0, 20.0, 0.0],
+            "y_analysis": [0.0, 0.0, 5.0, 5.0],
             "is_detected": [True, True, True, False],
             "is_extrapolated": [False, False, False, True],
         }
@@ -45,14 +53,31 @@ def test_centroid_width_depth_and_hull_calculation() -> None:
 
     metrics = team_shape.compute_team_shape_for_group(df)
 
-    assert metrics["centroid_x"] == 1.0
-    assert metrics["centroid_y"] == 1.0
-    assert metrics["team_width"] == 2.0
-    assert metrics["team_depth"] == 2.0
-    assert metrics["convex_hull_area"] == 4.0
+    assert metrics["centroid_x"] == 10.0
+    assert metrics["centroid_y"] == 2.5
+    assert metrics["team_width"] == 5.0
+    assert metrics["team_depth"] == 20.0
+    assert metrics["convex_hull_area"] == 100.0
     assert metrics["player_count_used"] == 4
     assert metrics["detected_player_count"] == 3
     assert metrics["extrapolated_player_count"] == 1
+
+
+def test_team_width_uses_y_range_and_team_depth_uses_x_range() -> None:
+    """Regression test for the Layer 2 v0.2.1 width/depth reversal bug."""
+    df = pd.DataFrame(
+        {
+            "x_analysis": [-10.0, 0.0, 15.0],
+            "y_analysis": [-3.0, 4.0, 9.0],
+            "is_detected": [True, True, True],
+            "is_extrapolated": [False, False, False],
+        }
+    )
+
+    metrics = team_shape.compute_team_shape_for_group(df)
+
+    assert metrics["team_width"] == 12.0
+    assert metrics["team_depth"] == 25.0
 
 
 def test_convex_hull_handles_fewer_than_three_points_safely() -> None:
@@ -137,6 +162,7 @@ def run_all_tests() -> None:
     """Run all Layer 2 sanity tests."""
     test_layer2_schema_definitions_exist()
     test_centroid_width_depth_and_hull_calculation()
+    test_team_width_uses_y_range_and_team_depth_uses_x_range()
     test_convex_hull_handles_fewer_than_three_points_safely()
     test_frame_team_shape_metrics_grouping()
     test_phase_linking_handles_simple_frame_ranges()
